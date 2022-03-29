@@ -1,105 +1,88 @@
-import './style.css'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
+import "./css/index.css";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-// Debug
-const gui = new dat.GUI()
+import { gsap } from "gsap";
+import Scrollbar from "smooth-scrollbar";
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
+Scrollbar.init(document.querySelector("#scrollArea"));
 
-// Scene
-const scene = new THREE.Scene()
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
 
-// Objects
-const geometry = new THREE.TorusGeometry( .7, .2, 16, 100 );
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.querySelector(".webgl").appendChild(renderer.domElement);
 
-// Materials
+camera.position.z = 40;
 
-const material = new THREE.MeshBasicMaterial()
-material.color = new THREE.Color(0xff0000)
+// gsap.from(camera.position, {
+//     // delay: 0.5,
+//     duration: 2,
+//     z: 400,
+//     ease: "power3.inOut",
+// });
 
-// Mesh
-const sphere = new THREE.Mesh(geometry,material)
-scene.add(sphere)
+const addCube = (i) => {
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
 
-// Lights
+    cube.position.set(
+        Math.random() * 100 - 50,
+        Math.random() * 100 - 50,
+        Math.random() * 100 - 50
+    );
+    console.log(cube);
+    // gsap.from(cube.position, {
+    //     delay: i * 0.02,
+    //     duration: 1,
+    //     x: "random(100,-100)",
+    //     y: "random(100,-100)",
+    //     z: "random(100,-100)",
+    //     ease: "power4.inOut",
+    // });
+    // gsap.from(cube, {
+    //     delay: i * 0.02,
+    //     alpha: 0,
+    //     sclae: 0,
+    //     ease: "power4.inOut",
+    // });
 
-const pointLight = new THREE.PointLight(0xffffff, 0.1)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight)
+    scene.add(cube);
+};
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
+for (let i = 0; i < 100; i++) {
+    addCube(i);
 }
 
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 2
-scene.add(camera)
-
-// Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-/**
- * Animate
- */
-
-const clock = new THREE.Clock()
-
-const tick = () =>
-{
-
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-    sphere.rotation.y = .5 * elapsedTime
-
-    // Update Orbital Controls
-    // controls.update()
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+function animate() {
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
 }
+animate();
 
-tick()
+gsap.from("h1", { duration: 1, alpha: 0, x: 400, ease: "power3.inOut" });
+
+const closeBtn = document.querySelector(".closeBtn");
+closeBtn.addEventListener("mouseover", () => {
+    gsap.to(closeBtn, {
+        duration: 0.5,
+        ease: "steps(23)",
+        backgroundPosition: "-690px 0px",
+    });
+});
+closeBtn.addEventListener("mouseout", () => {
+    gsap.to(closeBtn, {
+        duration: 0.5,
+        ease: "steps(23)",
+        backgroundPosition: "0px 0px",
+    });
+});

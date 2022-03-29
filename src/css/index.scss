@@ -1,0 +1,69 @@
+@import "reset";
+
+h1 {
+    color: #fff;
+    width: 100%;
+    font-size: 40px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+}
+h2 {
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+
+.closeBtn {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    right: 20px;
+    top: 20px;
+    z-index: 1000;
+    // background-size: 720px 30px;
+    // background-position: 0px 0px;
+    background: url("https://storage.googleapis.com/mm-soldat-inconnu.appspot.com/assets/20181122_121241/img/static/sprites/close_@2x.png")
+        no-repeat 0 0 / auto 30px;
+    // animation: imgMove 1.4s steps(24, end) infinite;
+    // &:hover {
+    //     // background-position: -690px 0px;
+    //     animation: imgMove 0.5s steps(24);
+    // }
+    @keyframes imgMove {
+        to {
+            background-position: -720px 0px;
+        }
+    }
+}
+
+.close-icon {
+    z-index: 2;
+    cursor: pointer;
+}
+
+#scrollArea {
+    // width: 100vw;
+    // height: 100vh;
+    // overflow: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+section {
+    min-height: 500px;
+    heigth: 100vh;
+    img {
+        width: 350px;
+    }
+}
+
+.webgl {
+    position: relative;
+    top: 0;
+    left: 0;
+    outline: none;
+}
